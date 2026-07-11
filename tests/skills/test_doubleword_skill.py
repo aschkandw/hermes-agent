@@ -62,7 +62,12 @@ def test_body_uses_required_section_order(parsed_skill: tuple[dict, str]) -> Non
     _, body = parsed_skill
 
     assert body.lstrip().startswith("# Doubleword Skill")
-    positions = [body.index(section) for section in REQUIRED_SECTIONS]
+    heading_lines = {
+        line: index
+        for index, line in enumerate(body.splitlines())
+        if line in REQUIRED_SECTIONS
+    }
+    positions = [heading_lines[section] for section in REQUIRED_SECTIONS]
     assert positions == sorted(positions)
 
 
